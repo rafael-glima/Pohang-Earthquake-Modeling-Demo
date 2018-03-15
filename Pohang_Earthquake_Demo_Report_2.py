@@ -92,59 +92,71 @@ from trainGD_EXP import trainGD_EXP
 from IntensityGrid import IntensityGrid
 import pickle
 
-#url = 'http://www.kma.go.kr/weather/earthquake_volcano/domesticlist.jsp?startTm=2017-01-01&endTm=2017-11-21&startSize=3&endSize=7&startLat=&endLat=&startLon=&endLon=&lat=&lon=&dist=&keyword=&x=49&y=7' #'http://newsky2.kma.go.kr/service/ErthqkInfoService/EarthquakeReport'
-url = 'http://www.kma.go.kr/weather/earthquake_volcano/domesticlist.jsp?startTm=2017-01-01&endTm=2017-11-21&startSize=3&endSize=7&startLat=&endLat=&startLon=&endLon=&lat=&lon=&dist=&keyword=&x=49&y=7' #'http://newsky2.kma.go.kr/service/ErthqkInfoService/EarthquakeReport'
+# seq = [0.]
 
-#queryParams = '?' + urlencode({ quote_plus('ServiceKey') : '서비스키', quote_plus('numOfRows') : '10', quote_plus('pageNo') : '1', quote_plus('fromTmFc') : '20170101', quote_plus('toTmFc') : '20170720', quote_plus('serviceKey') : 'TEST_SERVICE_KEY' })
+# for i in range(1,11):
 
-request = Request(url)# + queryParams)
-request.get_method = lambda: 'GET'
-response_body = urlopen(request).read()
-#print(response_body)
+# 	#url = 'http://www.kma.go.kr/weather/earthquake_volcano/domesticlist.jsp?startTm=2017-01-01&endTm=2017-11-21&startSize=3&endSize=7&startLat=&endLat=&startLon=&endLon=&lat=&lon=&dist=&keyword=&x=49&y=7' #'http://newsky2.kma.go.kr/service/ErthqkInfoService/EarthquakeReport'
+# 	url = 'http://www.weather.go.kr/weather/earthquake_volcano/domesticlist.jsp?startSize=999&endSize=999&pNo='+repr(i)+'&startLat=999.0&endLat=999.0&startLon=999.0&endLon=999.0&lat=999.0&lon=999.0&dist=999.0&keyword=&startTm=2017-01-01&endTm=2017-11-21' #'http://newsky2.kma.go.kr/service/ErthqkInfoService/EarthquakeReport'
+# 	print(url)
+# 	#queryParams = '?' + urlencode({ quote_plus('ServiceKey') : '서비스키', quote_plus('numOfRows') : '10', quote_plus('pageNo') : '1', quote_plus('fromTmFc') : '20170101', quote_plus('toTmFc') : '20170720', quote_plus('serviceKey') : 'TEST_SERVICE_KEY' })
 
-data = []
+# 	request = Request(url)# + queryParams)
+# 	request.get_method = lambda: 'GET'
+# 	response_body = urlopen(request).read()
+# 	#print(response_body)
 
-soup = BeautifulSoup(response_body, 'lxml')
-#print(soup)
-table = soup.find("table")
-table_body = table.find('tbody')
-rows = table_body.find_all('tr')
+# 	data = []
 
-for row in rows:
-    cols = row.find_all('td')
-    cols = [ele.text.strip() for ele in cols]
-    data.append([ele for ele in cols if ele])
+# 	soup = BeautifulSoup(response_body, 'lxml')
+# 	#print(soup)
+# 	table = soup.find("table")
+# 	table_body = table.find('tbody')
+# 	rows = table_body.find_all('tr')
 
-dates = np.array([])
-for i in range(len(data)-1):
-	#print(type(data[i][1]))
-	dates = np.append(dates, data[i][1])
+# 	for row in rows:
+# 		cols = row.find_all('td')
+# 		cols = [ele.text.strip() for ele in cols]
+# 		data.append([ele for ele in cols if ele])
 
-#print(dates)
-#print(len(data))
+# 	dates = np.array([])
+# 	for i in range(len(data)-1):
+# 		#print(type(data[i][1]))
+# 		dates = np.append(dates, data[i][1])
 
-for i in range(len(dates)):
+# 	#print(dates)
+# 	#print(len(data))
 
-	tmp = datetime.datetime.strptime(dates[i], '%Y/%m/%d %H:%M:%S')
-	tmp = time.mktime(tmp.timetuple())
-	dates[i] = float(tmp)
-	#print(dates[i])
+# 	for i in range(len(dates)):
 
-#print(dates)
-dates = dates[::-1]
-dates = np.float64(dates)
+# 		tmp = datetime.datetime.strptime(dates[i], '%Y/%m/%d %H:%M:%S')
+# 		tmp = time.mktime(tmp.timetuple())
+# 		dates[i] = float(tmp)
+# 		#print(dates[i])
 
-diff_dates = np.array([0.])
+# 	#print(dates)
+# 	dates = dates[::-1]
+# 	dates = np.float64(dates)
 
-for i in range(1, len(dates)):
+# 	diff_dates = np.array([0.])
 
-	tmp = dates[i]-dates[i-1]
-	diff_dates = np.append(diff_dates,tmp)
-#print(diff_dates)
+# 	for i in range(1, len(dates)):
 
-seq = np.cumsum(diff_dates)#[::-1]
+# 		tmp = dates[i]-dates[i-1]
+# 		diff_dates = np.append(diff_dates,tmp)
+# 	#print(diff_dates)
 
-#print(seq)
+# 	diff_dates[0] += seq[-1]
+
+# 	seq = np.append(seq, np.cumsum(diff_dates))#[::-1]
+
+# print(seq)
+
+# print('len: '+repr(len(seq)))
+
+seq = np.loadtxt('earthquake_seq.txt')
+
+marks = np.loadtxt('earthquake_mags.txt')
 
 taumax = seq[-1]
 
