@@ -1,6 +1,5 @@
 
-# coding: utf-8
-
+# -*- coding: utf-8 -*-
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -58,7 +57,7 @@ trainPredict = scaler.inverse_transform(trainPredict)
 trainY = scaler.inverse_transform([trainY])
 testPredict = scaler.inverse_transform(testPredict)
 testY = scaler.inverse_transform([testY])
-QQpredseq = np.append(trainPredict,testPredict)
+QQpredseq = np.append(trainPredict,testPredict+trainPredict[-1])
 
 # calculate root mean squared error
 trainScore = math.sqrt(mean_squared_error(trainY[0], trainPredict[:,0]))
@@ -80,7 +79,7 @@ plt.subplot(121)
 plt.plot(scaler.inverse_transform(training_seq))
 plt.plot(trainPredictPlot)
 plt.plot(testPredictPlot)
-#plt.suptitle('Earthquake Interval Sequence Prediction')
+plt.suptitle('Sequence Prediction')
 plt.ylabel('Interval Magnitude')
 #plt.savefig('Sequence_Prediction.png')
 #plt.close()
@@ -89,7 +88,9 @@ plt.ylabel('Interval Magnitude')
 
 plt.subplot(122)
 plt.plot(np.cumsum(seq),np.cumsum(seq), label='Original Sequence')
-plt.plot(np.cumsum(seq[:len(QQpredseq)],np.cumsum(QQpredseq),label='Predicted Sequence')
-#plt.title('Sequence Prediction and Q-Q Plot')
+plt.plot(np.cumsum(seq[:len(QQpredseq)]),np.cumsum(QQpredseq),label='Predicted Sequence')
+plt.suptitle('Q-Q Plot')
 plt.savefig('Earthquake_Sequence_Prediction.png')
 plt.close()
+
+#plt.show()
