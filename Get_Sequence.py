@@ -58,7 +58,7 @@ from urllib.request import Request, urlopen
 from urllib.parse import urlencode, quote_plus
 
 #import SimHawkesProcesses
-from SimHawkesProcesses import simHP
+#from SimHawkesProcesses import simHP
 #from SimSeqNonParamKernel import SimSeqNonParamKernel
 
 from joblib import Parallel, delayed
@@ -86,10 +86,10 @@ import time
 #from PWL_Class import PWL_Class
 #from SQR_Class import SQR_Class
 #from SNS_Class import SNS_Class
-from trainGD_PWL import trainGD_PWL
-from trainGD_EXP import trainGD_EXP
+#from trainGD_PWL import trainGD_PWL
+#from trainGD_EXP import trainGD_EXP
 
-from IntensityGrid import IntensityGrid
+#from IntensityGrid import IntensityGrid
 import pickle
 
 seq = [0.]
@@ -124,12 +124,12 @@ for i in range(1,11):
 
 	dates = np.array([])
 	for i in range(len(data)-1):
-		print(type(data[i][1]))
+		#print(type(data[i][1]))
 		dates = np.append(dates, data[i][1])
 
 	marks = np.array([])
 	for i in range(len(data)-1):
-		print(type(data[i][2]))
+		#print(type(data[i][2]))
 		marks = np.append(marks, float(data[i][2]))
 
 	#print(dates)
