@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #' % Pohang Earthquake Sequence Modeling
 #' % Rafael Lima & Jaesik Choi (SAIL-UNIST)
-#' % November, 2018
+#' % March, 2018
 
 #' # Introduction
 
