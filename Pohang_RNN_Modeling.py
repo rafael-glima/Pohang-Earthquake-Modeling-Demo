@@ -12,6 +12,8 @@ from sklearn.metrics import mean_squared_error
 #from IntensityGrid import IntensityGrid
 np.random.seed(2018)
 
+# This code is based on material found in the website (www.machinelearningmastery.com)
+
 def create_training_seq(dataset, look_back=1):
 	dataX, dataY = [], []
 	for i in range(len(dataset)-look_back-1):
